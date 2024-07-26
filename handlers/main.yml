@@ -1,0 +1,22 @@
+---
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+  become: true
+
+- name: restart fail2ban
+  service:
+    name: fail2ban
+    state: restarted
+  become: true
+
+- name: start fail2ban-client
+  command: fail2ban-client start
+  become: true
+  ignore_errors: true
+
+- name: enable ufw
+  community.general.ufw:
+    state: enabled
+  become: true

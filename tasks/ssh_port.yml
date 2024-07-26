@@ -1,0 +1,29 @@
+---
+  - name: check default ssh port
+    ansible.builtin.wait_for:
+      host: "{{ ansible_host }}"
+      port: "{{ ssh_port }}"
+      state: started
+      timeout: "{{ check_timeout }}"
+    register: default_ssh
+    delegate_to: localhost
+    ignore_errors: true
+
+  - name: set ansible_ssh_port to default
+    set_fact: ansible_ssh_port={{ ssh_port }}
+    when: default_ssh.elapsed < 10
+
+  - name: check custom ssh port
+    ansible.builtin.wait_for:
+      host: "{{ ansible_host }}"
+      port: "{{ ssh_port_custom }}"
+      state: started
+      timeout: "{{ check_timeout }}"
+    register: custom_ssh
+    delegate_to: localhost
+    ignore_errors: true
+    when: default_ssh.elapsed >= 10
+
+  - name: set ansible_ssh_port to custom
+    set_fact: ansible_ssh_port={{ ssh_port_custom }}
+    when: default_ssh.elapsed >= 10 and custom_ssh.elapsed < 10

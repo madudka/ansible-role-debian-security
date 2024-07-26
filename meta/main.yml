@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  role_name: debian_security
+  author: madudka
+  description: debian security
+  company: madudka.dev
+  license: GPL-3.0-only
+  min_ansible_version: 2.16.8
+  platforms:
+    - name: Debian
+      versions:
+        - trixie
+  galaxy_tags:
+    - linux
+    - debian
+    - security
+    - ssh
+    - sshd
+    - fail2ban
+    - ufw
+
+dependencies: []

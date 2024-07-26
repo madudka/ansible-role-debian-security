@@ -1,0 +1,12 @@
+---
+- name: include determine ssh port
+  import_tasks: ssh_port.yml
+
+- name: include sshd configurate
+  import_tasks: sshd.yml
+
+- name: include file2ban configurate
+  import_tasks: file2ban.yml
+
+- name: include ufw configurate
+  import_tasks: ufw.yml

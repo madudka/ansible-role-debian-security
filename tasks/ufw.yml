@@ -1,0 +1,13 @@
+---
+- name: install ufw
+  apt:
+    name: ufw
+    state: present
+    update_cache: true
+  become: true
+
+- name: allow connections to custom ssh port
+  command: ufw allow {{ ssh_port_custom }}/tcp
+  notify:
+    - enable ufw    
+  become: true

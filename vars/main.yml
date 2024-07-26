@@ -1,0 +1,4 @@
+---
+ssh_port_custom: 212
+my_ip: 192.168.0.165
+sshd_jail_log_path: /var/log/fail2ban_sshd.log
