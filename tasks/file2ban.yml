@@ -1,18 +1,18 @@
 ---
-- name: install fail2ban
+- name: Install fail2ban
   package:
     name: fail2ban
     state: present
   become: true
 
-- name: create local settings fail2ban
+- name: Create local settings fail2ban
   copy:
     src: /etc/fail2ban/jail.conf
     dest: /etc/fail2ban/jail.local
     remote_src: yes
   become: true
 
-- name: configurate fail2ban
+- name: Configurate fail2ban
   command: sed -i 's|{{ item.regexp }}|{{ item.line }}|' /etc/fail2ban/jail.local
   loop:
         - { regexp: '#ignoreip = 127.0.0.1/8 ::1', line: 'ignoreip = 127.0.0.1/8 ::1/ {{ my_ip }}' }
@@ -21,7 +21,7 @@
         - { regexp: 'action = %(action_)s', line: 'action = iptables' }
   become: true
   
-- name: create user settings for ssh
+- name: Create user settings for ssh
   copy:
     content: |
       [sshd]
@@ -35,12 +35,12 @@
     dest: /etc/fail2ban/jail.d/sshd.local   
   become: true
 
-- name: create log file for sshd jail
+- name: Create log file for sshd jail
   file:
     path: "{{ sshd_jail_log_path }}"
     state: touch
     mode: u+rwx,g+rx,o+rx
   notify:
-    - restart fail2ban
-    - start fail2ban-client 
+    - Restart fail2ban
+    - Start fail2ban-client 
   become: true
