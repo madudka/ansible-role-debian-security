@@ -13,7 +13,7 @@ Tested on operating system Debian GNU/Linux trixie/sid (kernel Linux 6.1.0-18-am
 Install
 -------
 ```
-ansible-galaxy install madudka.debian_security
+ansible-galaxy install madudka.debian-security
 ```
 
 Requirements
@@ -60,7 +60,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: all
       roles:
-         - { role: madudka.debian_security }
+         - { role: madudka.debian-security }
 
 License
 -------
