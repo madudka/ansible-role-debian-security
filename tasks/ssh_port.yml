@@ -1,5 +1,5 @@
 ---
-  - name: Check default ssh port
+  - name: Check default SSH port
     ansible.builtin.wait_for:
       host: "{{ ansible_host }}"
       port: "{{ ssh_port }}"
@@ -13,7 +13,7 @@
     set_fact: ansible_ssh_port={{ ssh_port }}
     when: default_ssh.elapsed < 10
 
-  - name: Check custom ssh port
+  - name: Check custom SSH port
     ansible.builtin.wait_for:
       host: "{{ ansible_host }}"
       port: "{{ ssh_port_custom }}"

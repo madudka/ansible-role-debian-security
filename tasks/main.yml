@@ -1,13 +1,12 @@
 ---
-- name: Include determine ssh port
+- name: Include determine SSH port
   import_tasks: ssh_port.yml
-  check_mode: false
 
-- name: Include sshd configurate
+- name: Include SSHD configurate
   import_tasks: sshd.yml
 
-- name: Include file2ban configurate
+- name: Include File2ban install
   import_tasks: file2ban.yml
 
-- name: Include ufw configurate
+- name: Include UFW install
   import_tasks: ufw.yml

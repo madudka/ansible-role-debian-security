@@ -1,3 +1,17 @@
 ---
+#General
+cfg_owner: root
+cfg_group: root
+
+#SSH
 ssh_port: 22
 check_timeout: 10
+sshd_config_path: /etc/ssh/sshd_config
+sshd_config_backup_path: /etc/ssh/sshd_config.backup
+
+#Fail2ban
+fail2ban_conf_path: /etc/fail2ban/fail2ban.conf
+jail_conf_path: /etc/fail2ban/jail.conf
+jail_conf_local_path: /etc/fail2ban/jail.local
+jail_sshd_conf_local_path: /etc/fail2ban/jail.d/sshd.local
+jail_sshd_log_path: /var/log/fail2ban_sshd.log

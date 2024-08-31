@@ -1,9 +1,8 @@
 ---
-- name: Install ufw
+- name: Install UFW
   apt:
     name: ufw
     state: present
-    update_cache: true
   become: true
 
 - name: Allow connections to custom SSH port
@@ -11,5 +10,5 @@
     rule: allow
     port: "{{ ssh_port_custom }}"
     proto: tcp
-  notify: Enable ufw
+  notify: Enable UFW
   become: true

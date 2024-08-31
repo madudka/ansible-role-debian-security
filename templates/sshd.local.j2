@@ -1,0 +1,8 @@
+[sshd]
+action = iptables[name=sshd]
+allowipv6 = auto
+backend = systemd
+enabled = true
+filter = sshd
+logpath = {{ jail_sshd_log_path }}
+port = {{ ssh_port_custom }}

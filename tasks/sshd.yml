@@ -1,12 +1,12 @@
 ---
-- name: Backup sshd config
+- name: Backup SSHD config
   copy:
-    src: /etc/ssh/sshd_config
-    dest: /etc/ssh/sshd_config.backup
+    src: "{{ sshd_config_path }}"
+    dest: "{{ sshd_config_backup_path }}"
     remote_src: yes
   become: true
 
-- name: Change ssh port
-  command: sed -i 's/#Port {{ ssh_port }}/Port {{ ssh_port_custom }}/' /etc/ssh/sshd_config
-  notify: Restart sshd 
+- name: Change SSH port
+  command: sed -i 's/#Port {{ ssh_port }}/Port {{ ssh_port_custom }}/' {{ sshd_config_path }}
+  notify: Restart SSHD 
   become: true

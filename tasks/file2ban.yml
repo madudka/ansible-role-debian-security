@@ -1,46 +1,47 @@
 ---
-- name: Install fail2ban
+- name: Install Fail2ban
   package:
     name: fail2ban
     state: present
   become: true
 
-- name: Create local settings fail2ban
+- name: Create local settings Fail2ban
   copy:
-    src: /etc/fail2ban/jail.conf
-    dest: /etc/fail2ban/jail.local
+    src: "{{ jail_conf_path }}"
+    dest: "{{ jail_conf_local_path }}"
     remote_src: yes
+    owner: "{{ cfg_owner }}"
+    group: "{{ cfg_group }}"
+    mode: '0644'
   become: true
 
-- name: Configurate fail2ban
-  command: sed -i 's|{{ item.regexp }}|{{ item.line }}|' /etc/fail2ban/jail.local
+- name: Configurate Fail2ban 
+  command: sed -i 's|#allowipv6 = auto|allowipv6 = auto|' {{ fail2ban_conf_path }} 
+  become: true
+
+- name: Configurate Fail2ban jails
+  command: sed -i 's|{{ item.regexp }}|{{ item.line }}|' {{ jail_conf_local_path }}
   loop:
-        - { regexp: '#ignoreip = 127.0.0.1/8 ::1', line: 'ignoreip = 127.0.0.1/8 ::1/ {{ my_ip }}' }
+        - { regexp: '#ignoreip = 127.0.0.1/8 ::1', line: 'ignoreip = 127.0.0.1/8 ::1 {{ fail2ban_ignoreips | join(" ") }}' }
         - { regexp: 'bantime  = 10m', line: 'bantime  = 1y' }
         - { regexp: 'maxretry = 5', line: 'maxretry = 4' }
-        - { regexp: 'action = %(action_)s', line: 'action = iptables' }
-  become: true
-  
-- name: Create user settings for ssh
-  copy:
-    content: |
-      [sshd]
-      action = iptables[name=sshd]
-      allowipv6 = auto
-      backend = systemd
-      enabled = true
-      filter = sshd
-      logpath = {{ sshd_jail_log_path }}
-      port = {{ ssh_port_custom }}         
-    dest: /etc/fail2ban/jail.d/sshd.local   
+        - { regexp: 'action = %(action_)s', line: 'action = iptables' }        
   become: true
 
-- name: Create log file for sshd jail
+- name: Create user settings for SSH
+  ansible.builtin.template:
+    src: sshd.local.j2
+    dest: "{{ jail_sshd_conf_local_path }}"
+    owner: "{{ cfg_owner }}"
+    group: "{{ cfg_group }}"
+    mode: '0644'
+  become: true
+
+- name: Create log file for SSHD jail
   file:
-    path: "{{ sshd_jail_log_path }}"
+    path: "{{ jail_sshd_log_path }}"
     state: touch
-    mode: u+rwx,g+rx,o+rx
+    mode: '0755'
   notify:
-    - Restart fail2ban
-    - Start fail2ban-client 
+    - Restart Fail2ban
   become: true

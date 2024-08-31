@@ -9,7 +9,7 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - trixie
+        - bookworm
   galaxy_tags:
     - linux
     - debian
