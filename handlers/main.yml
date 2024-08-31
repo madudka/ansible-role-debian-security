@@ -1,12 +1,12 @@
 ---
 - name: Restart SSHD
-  service:
+  ansible.builtin.service:
     name: sshd
     state: restarted
   become: true
 
 - name: Restart Fail2ban
-  service:
+  ansible.builtin.service:
     name: fail2ban
     enabled: true
     state: restarted

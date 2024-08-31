@@ -1,12 +1,12 @@
 ---
 - name: Install UFW
-  apt:
+  ansible.builtin.apt:
     name: ufw
     state: present
   become: true
 
 - name: Allow connections to custom SSH port
-  ufw:
+  community.general.ufw:
     rule: allow
     port: "{{ ssh_port_custom }}"
     proto: tcp

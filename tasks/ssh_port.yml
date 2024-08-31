@@ -10,7 +10,7 @@
     ignore_errors: true
 
   - name: Set ansible_ssh_port to default
-    set_fact: ansible_ssh_port={{ ssh_port }}
+    ansible.builtin.set_fact: ansible_ssh_port={{ ssh_port }}
     when: default_ssh.elapsed < 10
 
   - name: Check custom SSH port
@@ -25,5 +25,5 @@
     when: default_ssh.elapsed >= 10
 
   - name: Set ansible_ssh_port to custom
-    set_fact: ansible_ssh_port={{ ssh_port_custom }}
+    ansible.builtin.set_fact: ansible_ssh_port={{ ssh_port_custom }}
     when: default_ssh.elapsed >= 10 and custom_ssh.elapsed < 10

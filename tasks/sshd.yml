@@ -1,12 +1,12 @@
 ---
 - name: Backup SSHD config
-  copy:
+  ansible.builtin.copy:
     src: "{{ sshd_config_path }}"
     dest: "{{ sshd_config_backup_path }}"
     remote_src: yes
   become: true
 
 - name: Change SSH port
-  command: sed -i 's/#Port {{ ssh_port }}/Port {{ ssh_port_custom }}/' {{ sshd_config_path }}
+  ansible.builtin.command: sed -i 's/#Port {{ ssh_port }}/Port {{ ssh_port_custom }}/' {{ sshd_config_path }}
   notify: Restart SSHD 
   become: true

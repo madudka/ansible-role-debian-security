@@ -1,12 +1,12 @@
 ---
 - name: Install Fail2ban
-  package:
+  ansible.builtin.package:
     name: fail2ban
     state: present
   become: true
 
 - name: Create local settings Fail2ban
-  copy:
+  ansible.builtin.copy:
     src: "{{ jail_conf_path }}"
     dest: "{{ jail_conf_local_path }}"
     remote_src: yes
@@ -16,11 +16,11 @@
   become: true
 
 - name: Configurate Fail2ban 
-  command: sed -i 's|#allowipv6 = auto|allowipv6 = auto|' {{ fail2ban_conf_path }} 
+  ansible.builtin.command: sed -i 's|#allowipv6 = auto|allowipv6 = auto|' {{ fail2ban_conf_path }} 
   become: true
 
 - name: Configurate Fail2ban jails
-  command: sed -i 's|{{ item.regexp }}|{{ item.line }}|' {{ jail_conf_local_path }}
+  ansible.builtin.command: sed -i 's|{{ item.regexp }}|{{ item.line }}|' {{ jail_conf_local_path }}
   loop:
         - { regexp: '#ignoreip = 127.0.0.1/8 ::1', line: 'ignoreip = 127.0.0.1/8 ::1 {{ fail2ban_ignoreips | join(" ") }}' }
         - { regexp: 'bantime  = 10m', line: 'bantime  = 1y' }
@@ -38,7 +38,7 @@
   become: true
 
 - name: Create log file for SSHD jail
-  file:
+  ansible.builtin.file:
     path: "{{ jail_sshd_log_path }}"
     state: touch
     mode: '0755'
