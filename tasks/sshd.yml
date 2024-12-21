@@ -6,7 +6,32 @@
     remote_src: yes
   become: true
 
-- name: Change SSH port
-  ansible.builtin.command: sed -i 's/#Port {{ ssh_port }}/Port {{ ssh_port_custom }}/' {{ sshd_config_path }}
-  notify: Restart SSHD 
+- name: Configurate sshd
+  ansible.builtin.command: sed -i 's/{{ item.regexp }}/{{ item.line }}/' {{ sshd_config_path }}
+  loop:
+        - { regexp: '#Port {{ ssh_port }}', line: 'Port {{ ssh_port_custom }}' }
+        - { regexp: '#StrictModes yes', line: 'StrictModes yes' }
+        - { regexp: '#PermitRootLogin prohibit-password', line: 'PermitRootLogin no' }
+        - { regexp: '#MaxAuthTries 6', line: 'MaxAuthTries {{ max_auth_tries }}' }
+  notify: Restart SSHD
   become: true
+
+- name: Add custom SSH port to services file
+  ansible.builtin.lineinfile:
+    path: "{{ services_path }}"
+    line: "sshd\t{{ ssh_port_custom }}\t#custom sshd port"
+    state: present
+  become: true
+
+- name: Check sshd сonfiguration
+  command: sudo sshd -t
+  register: sshd_check_result
+  failed_when: sshd_check_result.rc != 0
+  changed_when: false
+  check_mode: no
+  become: true
+
+- name: Output sshd сonfiguration errors
+  fail:
+    msg: "Errors found in sshd configuration: {{ sshd_check_result.stderr }}"
+  when: sshd_check_result.stderr != ""

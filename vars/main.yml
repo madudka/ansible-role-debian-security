@@ -1,4 +1,5 @@
 ---
-ssh_port_custom: 212
+ssh_port_custom: 2002
 fail2ban_ignoreips: 
   - 192.168.0.165
+max_auth_tries: 3

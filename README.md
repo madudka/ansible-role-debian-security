@@ -43,6 +43,7 @@ Defaults variables `/defaults/main.yml`:
 | `check_timeout`             | Timeout of checking ssh port.           | 10                              |
 | `sshd_config_path`          | Path to the sshd_config file.           | /etc/ssh/sshd_config            |
 | `sshd_config_backup_path`   | Path to the backup of sshd_config file. | /etc/ssh/sshd_config.backup     |
+| `services_path`             | Path to the services file.              | /etc/services                   |
 | `fail2ban_conf_path`        | Path to the fail2ban.conf file.         | /etc/fail2ban/fail2ban.conf     |
 | `jail_conf_path`            | Path to the jail.conf file.             | /etc/fail2ban/jail.conf         |
 | `jail_conf_local_path`      | Path to the jail.local file.            | /etc/fail2ban/jail.local        |
@@ -51,10 +52,11 @@ Defaults variables `/defaults/main.yml`:
 
 User variables `/vars/main.yml`:
 
-| Name                 | Description               | Value example   |
-| -------------------- | ------------------------- | --------------- |
-| `ssh_port_custom`    | Custom ssh port.          | 212             |
-| `fail2ban_ignoreips` | Fail2ban whitelist of IP. | - 192.168.0.165 |
+| Name                 | Description                                  | Value example   |
+| -------------------- | -------------------------------------------- | --------------- |
+| `ssh_port_custom`    | Custom ssh port.                             | 2002            |
+| `fail2ban_ignoreips` | Fail2ban whitelist of IP.                    | - 192.168.0.165 |
+| `max_auth_tries`     | Max failed SSH auth attempts per connection. | 3               |
 
 Dependencies
 ------------

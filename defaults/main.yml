@@ -8,6 +8,7 @@ ssh_port: 22
 check_timeout: 10
 sshd_config_path: /etc/ssh/sshd_config
 sshd_config_backup_path: /etc/ssh/sshd_config.backup
+services_path: /etc/services
 
 #Fail2ban
 fail2ban_conf_path: /etc/fail2ban/fail2ban.conf
